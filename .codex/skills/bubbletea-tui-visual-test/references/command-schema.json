@@ -1,0 +1,211 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.codex/skills/bubbletea-tui-visual-test/command-schema.json",
+  "title": "Agent TUI Command Contract",
+  "type": "object",
+  "required": ["version", "command", "params"],
+  "properties": {
+    "version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "command": {
+      "type": "string",
+      "enum": [
+        "open",
+        "close",
+        "press",
+        "type",
+        "wait",
+        "snapshot",
+        "assert-visual",
+        "record"
+      ]
+    },
+    "params": {
+      "type": "object"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "command": { "const": "open" }
+        }
+      },
+      "then": {
+        "properties": {
+          "params": {
+            "type": "object",
+            "required": ["cmd", "cwd", "cols", "rows"],
+            "properties": {
+              "cmd": { "type": "string", "minLength": 1 },
+              "cwd": { "type": "string", "minLength": 1 },
+              "cols": { "type": "integer", "minimum": 20 },
+              "rows": { "type": "integer", "minimum": 10 },
+              "env": {
+                "type": "object",
+                "additionalProperties": { "type": "string" }
+              },
+              "locale": { "type": "string" },
+              "theme": { "type": "string" },
+              "color_mode": { "type": "string", "enum": ["16", "256", "truecolor"] }
+            },
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "command": { "enum": ["close", "press", "type", "wait", "snapshot", "assert-visual", "record"] }
+        }
+      },
+      "then": {
+        "properties": {
+          "params": {
+            "type": "object",
+            "required": ["session_id"],
+            "properties": {
+              "session_id": { "type": "string", "minLength": 1 }
+            },
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "command": { "const": "press" }
+        }
+      },
+      "then": {
+        "properties": {
+          "params": {
+            "required": ["session_id", "key"],
+            "properties": {
+              "key": { "type": "string", "minLength": 1 }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "command": { "const": "type" }
+        }
+      },
+      "then": {
+        "properties": {
+          "params": {
+            "required": ["session_id", "text"],
+            "properties": {
+              "text": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "command": { "const": "wait" }
+        }
+      },
+      "then": {
+        "properties": {
+          "params": {
+            "required": ["session_id", "timeout_ms"],
+            "properties": {
+              "match_text": { "type": "string" },
+              "match_regex": { "type": "string" },
+              "timeout_ms": { "type": "integer", "minimum": 1 }
+            },
+            "anyOf": [
+              { "required": ["match_text"] },
+              { "required": ["match_regex"] }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "command": { "const": "snapshot" }
+        }
+      },
+      "then": {
+        "properties": {
+          "params": {
+            "required": ["session_id", "name"],
+            "properties": {
+              "name": { "type": "string", "minLength": 1 },
+              "output_dir": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "command": { "const": "assert-visual" }
+        }
+      },
+      "then": {
+        "properties": {
+          "params": {
+            "required": ["session_id", "name", "baseline_path"],
+            "properties": {
+              "name": { "type": "string", "minLength": 1 },
+              "baseline_path": { "type": "string", "minLength": 1 },
+              "threshold": { "type": "number", "minimum": 0, "maximum": 1 }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "command": { "const": "record" }
+        }
+      },
+      "then": {
+        "properties": {
+          "params": {
+            "required": ["session_id", "output_path"],
+            "properties": {
+              "output_path": { "type": "string", "minLength": 1 }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "result": {
+      "type": "object",
+      "required": ["ok", "session_id"],
+      "properties": {
+        "ok": { "type": "boolean" },
+        "session_id": { "type": "string" },
+        "data": { "type": "object" },
+        "error": {
+          "type": "object",
+          "required": ["code", "message"],
+          "properties": {
+            "code": { "type": "string" },
+            "message": { "type": "string" }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
