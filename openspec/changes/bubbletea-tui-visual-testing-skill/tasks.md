@@ -13,10 +13,10 @@
 
 ## 3. Workstream B: visual regression pipeline (Agent B)
 
-- [ ] 3.1 Implement PNG checkpoint capture + metadata writer in `.codex/skills/bubbletea-tui-visual-test/scripts/visual_pipeline.py`
-- [ ] 3.2 Implement baseline diff command (`assert-visual`) with configurable threshold in `.codex/skills/bubbletea-tui-visual-test/scripts/visual_pipeline.py`
-- [ ] 3.3 Implement GIF export command (`record`) in `.codex/skills/bubbletea-tui-visual-test/scripts/visual_pipeline.py`
-- [ ] 3.4 Add automated tests for snapshot metadata, pass/fail diff behavior, and renderer-unavailable errors in `.codex/skills/bubbletea-tui-visual-test/scripts/tests/test_visual_pipeline.py`
+- [x] 3.1 Implement PNG checkpoint capture + metadata writer in `.codex/skills/bubbletea-tui-visual-test/scripts/visual_pipeline.py`
+- [x] 3.2 Implement baseline diff command (`assert-visual`) with configurable threshold in `.codex/skills/bubbletea-tui-visual-test/scripts/visual_pipeline.py`
+- [x] 3.3 Implement GIF export command (`record`) in `.codex/skills/bubbletea-tui-visual-test/scripts/visual_pipeline.py`
+- [x] 3.4 Add automated tests for snapshot metadata, pass/fail diff behavior, and renderer-unavailable errors in `.codex/skills/bubbletea-tui-visual-test/scripts/tests/test_visual_pipeline.py`
 
 ## 4. Workstream C: skill workflow and references (Agent C)
 
