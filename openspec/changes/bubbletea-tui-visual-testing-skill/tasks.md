@@ -20,10 +20,10 @@
 
 ## 4. Workstream C: skill workflow and references (Agent C)
 
-- [ ] 4.1 Author `.codex/skills/bubbletea-tui-visual-test/SKILL.md` with command-oriented workflow aligned to `command-schema.json`
-- [ ] 4.2 Add reference docs for assertions and deterministic runtime settings in `.codex/skills/bubbletea-tui-visual-test/references/assertions.md` and `references/runtime-normalization.md`
-- [ ] 4.3 Add parallel-safe artifact conventions in `.codex/skills/bubbletea-tui-visual-test/references/artifact-layout.md` (per-run output directories and naming)
-- [ ] 4.4 Add end-to-end usage example script in `.codex/skills/bubbletea-tui-visual-test/references/examples.md` that produces both snapshot and GIF outputs
+- [x] 4.1 Author `.codex/skills/bubbletea-tui-visual-test/SKILL.md` with command-oriented workflow aligned to `command-schema.json`
+- [x] 4.2 Add reference docs for assertions and deterministic runtime settings in `.codex/skills/bubbletea-tui-visual-test/references/assertions.md` and `references/runtime-normalization.md`
+- [x] 4.3 Add parallel-safe artifact conventions in `.codex/skills/bubbletea-tui-visual-test/references/artifact-layout.md` (per-run output directories and naming)
+- [x] 4.4 Add end-to-end usage example script in `.codex/skills/bubbletea-tui-visual-test/references/examples.md` that produces both snapshot and GIF outputs
 
 ## 5. Integration and verification (sequential after 2/3/4)
 
