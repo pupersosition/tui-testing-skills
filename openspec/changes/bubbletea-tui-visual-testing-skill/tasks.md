@@ -6,10 +6,10 @@
 
 ## 2. Workstream A: session automation engine (Agent A)
 
-- [ ] 2.1 Implement PTY session lifecycle commands (`open`, `close`) in `.codex/skills/bubbletea-tui-visual-test/scripts/session_engine.py`
-- [ ] 2.2 Implement interaction commands (`press`, `type`, `wait`) with timeout handling in `.codex/skills/bubbletea-tui-visual-test/scripts/session_engine.py`
-- [ ] 2.3 Implement structured JSON response helpers in `.codex/skills/bubbletea-tui-visual-test/scripts/session_contract.py`
-- [ ] 2.4 Add automated tests for lifecycle and wait behavior in `.codex/skills/bubbletea-tui-visual-test/scripts/tests/test_session_engine.py`
+- [x] 2.1 Implement PTY session lifecycle commands (`open`, `close`) in `.codex/skills/bubbletea-tui-visual-test/scripts/session_engine.py`
+- [x] 2.2 Implement interaction commands (`press`, `type`, `wait`) with timeout handling in `.codex/skills/bubbletea-tui-visual-test/scripts/session_engine.py`
+- [x] 2.3 Implement structured JSON response helpers in `.codex/skills/bubbletea-tui-visual-test/scripts/session_contract.py`
+- [x] 2.4 Add automated tests for lifecycle and wait behavior in `.codex/skills/bubbletea-tui-visual-test/scripts/tests/test_session_engine.py`
 
 ## 3. Workstream B: visual regression pipeline (Agent B)
 
