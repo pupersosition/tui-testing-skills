@@ -1,0 +1,15 @@
+# Runtime artifacts
+.context/
+.pytest_cache/
+
+# Python caches
+__pycache__/
+*.pyc
+
+# Local app/runtime directories
+.claude/
+.codex/
+openspec/config.yaml
+
+# OS noise
+.DS_Store

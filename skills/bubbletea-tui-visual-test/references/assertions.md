@@ -60,7 +60,7 @@ Example:
   "params": {
     "session_id": "session-123",
     "name": "counter-1",
-    "baseline_path": ".codex/skills/bubbletea-tui-visual-test/references/baselines/counter-1.png",
+    "baseline_path": "skills/bubbletea-tui-visual-test/references/baselines/counter-1.png",
     "threshold": 0.005
   }
 }

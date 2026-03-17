@@ -9,6 +9,9 @@ Agents can run terminal commands, but they lack a standardized way to verify Bub
 - Add visual testing outputs: checkpoint PNG snapshots with baseline diffing, plus GIF artifacts for human review.
 - Add assertion primitives for text/state waits and visual regression checks.
 - Add task decomposition and artifact directory conventions so multiple Conductor agents can implement streams in parallel with minimal file conflicts.
+- Convert the repository to a reusable skill source with a canonical `skills/` layout.
+- Add an installer that lets the user select target agent (`claude`, `copilot`, `codex`, `opencode`) and installs the skill into that agent's skill directory.
+- Add repository hygiene updates so runtime artifacts and local app caches do not pollute version control.
 
 ## Capabilities
 
@@ -16,13 +19,17 @@ Agents can run terminal commands, but they lack a standardized way to verify Bub
 - `bubbletea-session-automation`: Start and control Bubble Tea app sessions, send input, wait for state, and capture structured session output.
 - `terminal-visual-regression`: Produce deterministic terminal snapshots, compare against baselines with configurable thresholds, and emit GIF artifacts for review.
 - `parallel-safe-skill-delivery`: Define implementation boundaries and output ownership rules that support concurrent agent work without overlapping edits.
+- `multi-agent-skill-installation`: Package the skill once and install it for a selected agent target (`claude`, `copilot`, `codex`, `opencode`) with predictable destination rules and override flags.
+- `repository-hygiene`: Keep reusable source, generated artifacts, and local runtime state separated to improve portability and clean commits.
 
 ### Modified Capabilities
 - None.
 
 ## Impact
 
-- Affected code: new skill directory under `.codex/skills/` with `SKILL.md`, scripts, and references.
+- Affected code: canonical reusable skill directory under `skills/` with `SKILL.md`, scripts, and references; installer tooling under `tools/`.
 - Dependencies: Python runtime (`pexpect`), optional terminal rendering toolchain for PNG/GIF generation.
 - Tooling: CI and local workflows will gain snapshot baseline management and visual diff reporting.
 - Systems: Conductor agent workflows can assign independent task streams (session control, visual pipeline, docs/references) with low merge conflict risk.
+- Packaging: add canonical reusable skill source directory and an installation utility.
+- Compatibility: define default install paths per agent with support for explicit destination overrides.

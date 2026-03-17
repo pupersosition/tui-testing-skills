@@ -20,6 +20,25 @@ class SessionEOFError(Exception):
     """Raised when the underlying process exits while waiting."""
 
 
+class TranscriptBuffer:
+    """Simple write target for capturing PTY output chunks."""
+
+    def __init__(self) -> None:
+        self._chunks: list[str] = []
+
+    def write(self, data: Any) -> None:
+        if isinstance(data, bytes):
+            self._chunks.append(data.decode("utf-8", errors="replace"))
+            return
+        self._chunks.append(str(data))
+
+    def flush(self) -> None:  # pragma: no cover - compatibility hook
+        return
+
+    def text(self) -> str:
+        return "".join(self._chunks)
+
+
 @dataclass
 class Session:
     session_id: str
@@ -29,6 +48,8 @@ class Session:
     cols: int
     rows: int
     env: Dict[str, str]
+    transcript: TranscriptBuffer
+    last_screen: str = ""
 
 
 def _default_spawn(*, cmd: str, cwd: str, env: Dict[str, str], cols: int, rows: int) -> Any:
@@ -105,6 +126,41 @@ class SessionEngine:
     def has_session(self, session_id: str) -> bool:
         return session_id in self._sessions
 
+    def runtime_metadata(self, session_id: str) -> Dict[str, Any] | None:
+        session = self._sessions.get(session_id)
+        if session is None:
+            return None
+        return {
+            "cols": session.cols,
+            "rows": session.rows,
+            "locale": session.env.get("LC_ALL") or session.env.get("LANG") or "",
+            "theme": session.env.get("BUBBLETEA_THEME", "default"),
+            "color_mode": session.env.get("COLORTERM", "256"),
+            "renderer_version": "builtin-terminal-rasterizer/1.0",
+        }
+
+    def screen_text(self, session_id: str) -> str | None:
+        session = self._sessions.get(session_id)
+        if session is None:
+            return None
+
+        transcript_text = session.transcript.text().strip()
+        if transcript_text:
+            max_chars = max(session.cols * session.rows * 4, 2048)
+            session.last_screen = transcript_text[-max_chars:]
+
+        chunks: list[str] = []
+        for attr in ("before", "after"):
+            value = getattr(session.child, attr, "")
+            if isinstance(value, str) and value:
+                chunks.append(value)
+
+        if chunks:
+            merged = "".join(chunks)
+            max_chars = max(session.cols * session.rows * 4, 2048)
+            session.last_screen = merged[-max_chars:]
+        return session.last_screen
+
     def open(self, params: Dict[str, Any]) -> Dict[str, Any]:
         cmd = params.get("cmd")
         cwd = params.get("cwd")
@@ -119,6 +175,9 @@ class SessionEngine:
             child = self._spawner(cmd=cmd, cwd=cwd, env=env, cols=cols, rows=rows)
         except Exception as exc:
             return error("", "OPEN_FAILED", str(exc))
+        transcript = TranscriptBuffer()
+        if hasattr(child, "logfile_read"):
+            child.logfile_read = transcript
 
         self._sessions[session_id] = Session(
             session_id=session_id,
@@ -128,6 +187,7 @@ class SessionEngine:
             cols=cols,
             rows=rows,
             env=env,
+            transcript=transcript,
         )
         return ok(
             session_id,
@@ -255,6 +315,10 @@ class SessionEngine:
             return error(session.session_id, "WAIT_FAILED", str(exc))
 
         elapsed_ms = int((self._clock() - start) * 1000)
+        latest_screen = self.screen_text(session.session_id)
+        if latest_screen:
+            session.last_screen = latest_screen
+
         return ok(
             session.session_id,
             {"mode": mode, "matched": matched, "elapsed_ms": elapsed_ms},
@@ -319,4 +383,3 @@ class SessionEngine:
             if fallback:
                 return str(fallback.group(0))
         return ""
-

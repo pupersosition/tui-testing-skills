@@ -38,11 +38,42 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 func (m model) View() string {
 	status := "STATUS: READY"
+	barWidth := 20
+	filled := m.count + 10
+	if filled < 0 {
+		filled = 0
+	}
+	if filled > barWidth {
+		filled = barWidth
+	}
+	bar := fmt.Sprintf("[%s%s]", repeat("#", filled), repeat(".", barWidth-filled))
+
 	return fmt.Sprintf(
-		"Bubble Tea Fixture\n\n%s\n\nCounter: %d\n\nKeys: + / - (or up/down)\nPress q to quit.\n",
+		"+------------------------------+\n"+
+			"| Bubble Tea Counter Fixture   |\n"+
+			"+------------------------------+\n\n"+
+			"%s\n\n"+
+			"Counter: %d\n"+
+			"Meter:   %s\n\n"+
+			"Controls:\n"+
+			"  + / up / k     Increment\n"+
+			"  - / down / j   Decrement\n"+
+			"  q              Quit\n",
 		status,
 		m.count,
+		bar,
 	)
+}
+
+func repeat(value string, count int) string {
+	if count <= 0 {
+		return ""
+	}
+	result := ""
+	for i := 0; i < count; i++ {
+		result += value
+	}
+	return result
 }
 
 func main() {

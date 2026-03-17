@@ -29,6 +29,7 @@ REQUIRED_RUNTIME_METADATA = (
     "renderer_version",
 )
 NAME_SANITIZER = re.compile(r"[^A-Za-z0-9._-]+")
+ANSI_ESCAPE = re.compile(r"\x1b\[[0-?]*[ -/]*[@-~]")
 
 
 @dataclass
@@ -86,23 +87,86 @@ def _validate_runtime_metadata(runtime_metadata: Mapping[str, Any]) -> dict[str,
     return {field: runtime_metadata[field] for field in REQUIRED_RUNTIME_METADATA}
 
 
-def _terminal_buffer_to_rgb(screen_text: str, cols: int, rows: int) -> bytes:
-    lines = screen_text.splitlines()
-    padded_lines = []
-    for row in range(rows):
-        line = lines[row] if row < len(lines) else ""
-        normalized = line.expandtabs(4)[:cols].ljust(cols)
-        padded_lines.append(normalized)
+def _strip_ansi_control_sequences(text: str) -> str:
+    without_ansi = ANSI_ESCAPE.sub("", text)
+    return without_ansi.replace("\r", "\n")
 
-    pixels = bytearray()
-    for line in padded_lines:
-        for char in line:
-            value = ord(char)
-            if value < 32 or value > 126:
-                value = 32
-            shade = (value * 17) % 256
-            pixels.extend((shade, shade, shade))
-    return bytes(pixels)
+
+def _normalized_screen_lines(screen_text: str, cols: int, rows: int) -> list[str]:
+    if "\x1b" in screen_text:
+        try:
+            import pyte  # type: ignore
+
+            screen = pyte.Screen(cols, rows)
+            stream = pyte.Stream(screen)
+            stream.feed(screen_text)
+            rendered = [line[:cols].ljust(cols) for line in screen.display]
+            if any(line.strip() for line in rendered):
+                return rendered
+        except Exception:
+            pass
+
+    cleaned = _strip_ansi_control_sequences(screen_text)
+    logical_lines = cleaned.splitlines()
+
+    # Keep the latest visible region because TUIs repaint frames continuously.
+    window = logical_lines[-rows:] if logical_lines else []
+    padded: list[str] = []
+    for row in range(rows):
+        line = window[row] if row < len(window) else ""
+        normalized = line.expandtabs(4)[:cols].ljust(cols)
+        padded.append(normalized)
+    return padded
+
+
+def _load_monospace_font(cell_height: int) -> Any:
+    from PIL import ImageFont  # type: ignore
+
+    candidates = (
+        "/System/Library/Fonts/Menlo.ttc",
+        "/Library/Fonts/Menlo-Regular.ttf",
+        "/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf",
+        "/usr/share/fonts/dejavu/DejaVuSansMono.ttf",
+    )
+    size = max(12, int(cell_height * 0.8))
+    for candidate in candidates:
+        try:
+            return ImageFont.truetype(candidate, size=size)
+        except Exception:
+            continue
+    return ImageFont.load_default()
+
+
+def _render_text_with_pillow(lines: list[str], cols: int, rows: int) -> tuple[int, int, bytes]:
+    from PIL import Image, ImageDraw  # type: ignore
+
+    cell_width = 9
+    cell_height = 18
+    width = max(1, cols * cell_width)
+    height = max(1, rows * cell_height)
+
+    image = Image.new("RGB", (width, height), color=(24, 24, 24))
+    draw = ImageDraw.Draw(image)
+    font = _load_monospace_font(cell_height)
+    for idx, line in enumerate(lines):
+        draw.text((4, idx * cell_height + 1), line, fill=(236, 236, 236), font=font)
+    return width, height, image.tobytes()
+
+
+def _terminal_buffer_to_rgb(screen_text: str, cols: int, rows: int) -> tuple[int, int, bytes]:
+    lines = _normalized_screen_lines(screen_text, cols, rows)
+    try:
+        return _render_text_with_pillow(lines, cols, rows)
+    except Exception:
+        # Fallback for environments without Pillow.
+        pixels = bytearray()
+        for line in lines:
+            for char in line:
+                if 32 <= ord(char) <= 126 and char != " ":
+                    pixels.extend((220, 220, 220))
+                else:
+                    pixels.extend((30, 30, 30))
+        return cols, rows, bytes(pixels)
 
 
 def _png_chunk(kind: bytes, payload: bytes) -> bytes:
@@ -246,12 +310,12 @@ class VisualPipeline:
         try:
             clean_name = _sanitize_checkpoint_name(name)
             runtime = _validate_runtime_metadata(runtime_metadata)
-            rgb = _terminal_buffer_to_rgb(screen_text, runtime["cols"], runtime["rows"])
+            width, height, rgb = _terminal_buffer_to_rgb(screen_text, runtime["cols"], runtime["rows"])
 
             png_path = self.checkpoints_dir / f"{clean_name}.png"
             metadata_path = self.metadata_dir / f"{clean_name}.metadata.json"
 
-            _write_png(png_path, runtime["cols"], runtime["rows"], rgb)
+            _write_png(png_path, width, height, rgb)
 
             record = {
                 "session_id": session_id,
@@ -377,4 +441,3 @@ class VisualPipeline:
             )
         except VisualPipelineError as exc:
             return _error(session_id, exc.code, exc.message)
-

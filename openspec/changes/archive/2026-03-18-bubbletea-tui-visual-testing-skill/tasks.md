@@ -27,7 +27,15 @@
 
 ## 5. Integration and verification (sequential after 2/3/4)
 
-- [ ] 5.1 Integrate dispatcher entrypoint `.codex/skills/bubbletea-tui-visual-test/scripts/agent_tui.py` that routes commands using `command-schema.json`
-- [ ] 5.2 Run fixture e2e flow to validate `open -> interact -> wait -> snapshot -> assert-visual -> record` and archive artifacts under a unique run directory
-- [ ] 5.3 Verify no path ownership conflicts across workstreams and reconcile any schema mismatches
-- [ ] 5.4 Document CI invocation and baseline update workflow in `.codex/skills/bubbletea-tui-visual-test/references/ci-workflow.md`
+- [x] 5.1 Integrate dispatcher entrypoint `.codex/skills/bubbletea-tui-visual-test/scripts/agent_tui.py` that routes commands using `command-schema.json`
+- [x] 5.2 Run fixture e2e flow to validate `open -> interact -> wait -> snapshot -> assert-visual -> record` and archive artifacts under a unique run directory
+- [x] 5.3 Verify no path ownership conflicts across workstreams and reconcile any schema mismatches
+- [x] 5.4 Document CI invocation and baseline update workflow in `.codex/skills/bubbletea-tui-visual-test/references/ci-workflow.md`
+
+## 6. Reusable packaging and multi-agent installation
+
+- [x] 6.1 Move/copy canonical skill source to `skills/bubbletea-tui-visual-test/` and treat it as the reusable install origin
+- [x] 6.2 Implement installer CLI with `--agent {claude,copilot,codex,opencode}`, optional `--dest`, and optional `--force`
+- [x] 6.3 Document installation usage and agent defaults in repository-level docs
+- [x] 6.4 Add/adjust ignore rules so runtime and local cache artifacts do not pollute git status
+- [x] 6.5 Run validation: installer dry run for each supported agent, script tests, and fixture integration smoke test

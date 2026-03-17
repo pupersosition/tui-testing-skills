@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://local.codex/skills/bubbletea-tui-visual-test/command-schema.json",
+  "$id": "https://local.skills/bubbletea-tui-visual-test/command-schema.json",
   "title": "Agent TUI Command Contract",
   "type": "object",
   "required": ["version", "command", "params"],
