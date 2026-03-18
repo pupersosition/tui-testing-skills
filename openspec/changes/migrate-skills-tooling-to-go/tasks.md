@@ -1,9 +1,9 @@
 ## 1. Shared bootstrap and contract freeze (sequential prerequisite)
 
-- [ ] 1.1 Add Go module bootstrap (`go.mod`, base package layout) and document canonical entrypoints in `README.md`
-- [ ] 1.2 Create shared command contract package (`internal/contract`) with typed request/response models mapped to `skills/bubbletea-tui-visual-test/references/command-schema.json`
-- [ ] 1.3 Add contract compatibility fixtures/golden responses for `open|close|press|type|wait|snapshot|assert-visual|record`
-- [ ] 1.4 Add CI job for Go lint/test/build validation and keep existing migration-era checks passing
+- [x] 1.1 Add Go module bootstrap (`go.mod`, base package layout) and document canonical entrypoints in `README.md`
+- [x] 1.2 Create shared command contract package (`internal/contract`) with typed request/response models mapped to `skills/bubbletea-tui-visual-test/references/command-schema.json`
+- [x] 1.3 Add contract compatibility fixtures/golden responses for `open|close|press|type|wait|snapshot|assert-visual|record`
+- [x] 1.4 Add CI job for Go lint/test/build validation and keep existing migration-era checks passing
 
 ## 2. Workstream A: session runtime migration (Agent A, owns `internal/session/**`, `tests/session/**`)
 

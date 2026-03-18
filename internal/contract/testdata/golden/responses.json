@@ -1,0 +1,63 @@
+{
+  "open": {
+    "ok": true,
+    "session_id": "session-fixture",
+    "data": {
+      "pid": 12345,
+      "cmd": "go run ./assets/fixtures/bubbletea-counter"
+    }
+  },
+  "close": {
+    "ok": true,
+    "session_id": "session-fixture",
+    "data": {
+      "closed": true
+    }
+  },
+  "press": {
+    "ok": true,
+    "session_id": "session-fixture",
+    "data": {
+      "action": "press",
+      "key": "enter"
+    }
+  },
+  "type": {
+    "ok": true,
+    "session_id": "session-fixture",
+    "data": {
+      "action": "type",
+      "text": "hello"
+    }
+  },
+  "wait": {
+    "ok": true,
+    "session_id": "session-fixture",
+    "data": {
+      "matched": true,
+      "elapsed_ms": 101
+    }
+  },
+  "snapshot": {
+    "ok": true,
+    "session_id": "session-fixture",
+    "data": {
+      "png_path": ".context/runs/run-001/snapshots/checkpoint-1.png"
+    }
+  },
+  "assert-visual": {
+    "ok": true,
+    "session_id": "session-fixture",
+    "data": {
+      "diff_ratio": 0.01,
+      "passed": true
+    }
+  },
+  "record": {
+    "ok": true,
+    "session_id": "session-fixture",
+    "data": {
+      "output_path": ".context/runs/run-001/replay.gif"
+    }
+  }
+}

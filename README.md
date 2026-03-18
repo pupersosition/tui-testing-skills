@@ -5,15 +5,30 @@ Reusable skill package for terminal-first visual testing of Bubble Tea applicati
 ## Repository Layout
 
 - `skills/bubbletea-tui-visual-test/`: canonical reusable skill source (install origin)
-- `tools/install_skill.py`: installer that copies a selected skill into a target agent skill directory
+- `cmd/install-skill/`: canonical Go installer entrypoint (bootstrap in migration phase)
+- `cmd/agent-tui/`: canonical Go dispatcher entrypoint (bootstrap in migration phase)
+- `internal/contract/`: shared Go request/response contract models mapped to `references/command-schema.json`
+- `tools/install_skill.py`: migration-era Python installer kept for compatibility
 - `openspec/changes/bubbletea-tui-visual-testing-skill/`: OpenSpec change artifacts
 
 ## Install
 
-Use the installer and select an agent target:
+Migration-era compatibility installer:
 
 ```bash
 python3 tools/install_skill.py --agent codex
+```
+
+Canonical Go installer entrypoint (bootstrap):
+
+```bash
+go run ./cmd/install-skill
+```
+
+Canonical Go dispatcher entrypoint (bootstrap):
+
+```bash
+go run ./cmd/agent-tui
 ```
 
 Supported agents:
@@ -43,6 +58,13 @@ Run script tests:
 
 ```bash
 python3 -m pytest skills/bubbletea-tui-visual-test/scripts/tests
+```
+
+Run Go contract tests and bootstrap builds:
+
+```bash
+go test ./...
+go build ./cmd/agent-tui ./cmd/install-skill
 ```
 
 Run integration smoke test:

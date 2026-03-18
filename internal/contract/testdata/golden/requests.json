@@ -1,0 +1,75 @@
+{
+  "open": {
+    "version": "1.0.0",
+    "command": "open",
+    "params": {
+      "cmd": "go run ./assets/fixtures/bubbletea-counter",
+      "cwd": "skills/bubbletea-tui-visual-test",
+      "cols": 100,
+      "rows": 40,
+      "env": { "TERM": "xterm-256color" },
+      "locale": "C.UTF-8",
+      "theme": "dark",
+      "color_mode": "256"
+    }
+  },
+  "close": {
+    "version": "1.0.0",
+    "command": "close",
+    "params": {
+      "session_id": "session-fixture"
+    }
+  },
+  "press": {
+    "version": "1.0.0",
+    "command": "press",
+    "params": {
+      "session_id": "session-fixture",
+      "key": "enter"
+    }
+  },
+  "type": {
+    "version": "1.0.0",
+    "command": "type",
+    "params": {
+      "session_id": "session-fixture",
+      "text": "hello"
+    }
+  },
+  "wait": {
+    "version": "1.0.0",
+    "command": "wait",
+    "params": {
+      "session_id": "session-fixture",
+      "match_text": "Count:",
+      "timeout_ms": 2000
+    }
+  },
+  "snapshot": {
+    "version": "1.0.0",
+    "command": "snapshot",
+    "params": {
+      "session_id": "session-fixture",
+      "name": "checkpoint-1",
+      "output_dir": ".context/runs/run-001"
+    }
+  },
+  "assert-visual": {
+    "version": "1.0.0",
+    "command": "assert-visual",
+    "params": {
+      "session_id": "session-fixture",
+      "name": "checkpoint-1",
+      "baseline_path": "references/baselines/counter-1.png",
+      "threshold": 0.03
+    }
+  },
+  "record": {
+    "version": "1.0.0",
+    "command": "record",
+    "params": {
+      "session_id": "session-fixture",
+      "output_path": ".context/runs/run-001/replay.gif"
+    }
+  }
+}
