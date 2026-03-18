@@ -10,7 +10,9 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from pathlib import Path
+import subprocess
 import sys
 from typing import Any, Dict, Iterable
 
@@ -40,6 +42,11 @@ REQUIRED_FIELDS: Dict[str, tuple[str, ...]] = {
     "assert-visual": ("session_id", "name", "baseline_path"),
     "record": ("session_id", "output_path"),
 }
+
+DEPRECATION_GUIDANCE = (
+    "Deprecated: python3 skills/bubbletea-tui-visual-test/scripts/agent_tui.py "
+    "is a migration compatibility path. Prefer `go run ./cmd/agent-tui`."
+)
 
 
 class AgentTUIDispatcher:
@@ -219,8 +226,40 @@ def _load_request(args: argparse.Namespace) -> Dict[str, Any]:
     raise ValueError("Provide --request or --request-file, or use --repl")
 
 
+def _repo_root() -> Path:
+    return Path(__file__).resolve().parents[3]
+
+
+def _try_go_dispatcher(argv: list[str]) -> int | None:
+    command = ["go", "run", "./cmd/agent-tui", *argv]
+    try:
+        completed = subprocess.run(command, cwd=_repo_root(), check=False)
+    except OSError:
+        return None
+    if completed.returncode != 0:
+        return None
+    return completed.returncode
+
+
 def main(argv: list[str] | None = None) -> int:
-    args = _parse_args(argv or sys.argv[1:])
+    raw_argv = argv or sys.argv[1:]
+
+    if os.environ.get("BUBBLETEA_TUI_FORCE_PYTHON") != "1":
+        print(f"[compat] {DEPRECATION_GUIDANCE}", file=sys.stderr)
+        go_exit = _try_go_dispatcher(raw_argv)
+        if go_exit is not None:
+            return go_exit
+        print(
+            "[compat] Go dispatcher unavailable; falling back to legacy Python runtime.",
+            file=sys.stderr,
+        )
+    else:
+        print(
+            "[compat] BUBBLETEA_TUI_FORCE_PYTHON=1 set; running legacy Python dispatcher.",
+            file=sys.stderr,
+        )
+
+    args = _parse_args(raw_argv)
     dispatcher = AgentTUIDispatcher(root_output_dir=args.root_output_dir)
 
     try:

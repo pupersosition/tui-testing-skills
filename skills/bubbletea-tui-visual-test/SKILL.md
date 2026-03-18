@@ -8,7 +8,8 @@ Use this skill to run deterministic Bubble Tea UI verification flows with comman
 ## Inputs
 
 - Bubble Tea app command and working directory
-- Dispatcher entrypoint that accepts command JSON (for example `scripts/agent_tui.py`)
+- Dispatcher entrypoint that accepts command JSON (preferred: `go run ./cmd/agent-tui`)
+  - Migration compatibility path: `python3 scripts/agent_tui.py`
   - Use `--repl` mode for multi-step flows so session state is preserved between commands.
 - Output root directory for run artifacts
 - Optional visual baseline PNGs

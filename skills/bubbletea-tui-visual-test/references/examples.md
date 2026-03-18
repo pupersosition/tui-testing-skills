@@ -1,6 +1,26 @@
 # Examples
 
-Use the integration runner script for a deterministic end-to-end flow:
+Go-first one-shot request example:
+
+```bash
+go run ./cmd/agent-tui --request '{"version":"1.0.0","command":"wait","params":{"session_id":"session-123","match_text":"STATUS: READY","timeout_ms":3000}}'
+```
+
+Go-first REPL example:
+
+```bash
+printf '%s\n' \
+  '{"version":"1.0.0","command":"close","params":{"session_id":"session-123"}}' \
+  | go run ./cmd/agent-tui --repl
+```
+
+Migration compatibility path (deprecated wrapper around dispatcher migration):
+
+```bash
+python3 skills/bubbletea-tui-visual-test/scripts/agent_tui.py --request '{"version":"1.0.0","command":"close","params":{"session_id":"session-123"}}'
+```
+
+Compatibility integration runner (legacy Python runtime) for deterministic end-to-end flow:
 
 ```bash
 bash skills/bubbletea-tui-visual-test/references/examples.sh
@@ -20,7 +40,8 @@ The runner performs:
 
 Prerequisites:
 
-- Python 3 with Pillow (`python3 -c 'import PIL'`)
+- Go toolchain (`go version`)
+- Python 3 with Pillow (`python3 -c 'import PIL'`) for compatibility runner
 - Go toolchain for the fixture app
 
 Outputs:

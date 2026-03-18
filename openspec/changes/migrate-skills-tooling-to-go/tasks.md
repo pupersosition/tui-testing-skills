@@ -28,10 +28,10 @@
 
 ## 5. Workstream D: dispatcher and migration wrappers (Agent D, owns `cmd/agent-tui/**`, `skills/bubbletea-tui-visual-test/scripts/**`, docs migration notes)
 
-- [ ] 5.1 Implement Go dispatcher entrypoint that validates requests and routes commands to session/visual packages via shared contract types
-- [ ] 5.2 Add migration-era compatibility wrappers for legacy Python command paths with explicit deprecation guidance
-- [ ] 5.3 Update skill docs/examples to use Go-first invocation while documenting temporary compatibility paths
-- [ ] 5.4 Add dispatcher contract tests for success/failure envelope parity across all commands
+- [x] 5.1 Implement Go dispatcher entrypoint that validates requests and routes commands to session/visual packages via shared contract types
+- [x] 5.2 Add migration-era compatibility wrappers for legacy Python command paths with explicit deprecation guidance
+- [x] 5.3 Update skill docs/examples to use Go-first invocation while documenting temporary compatibility paths
+- [x] 5.4 Add dispatcher contract tests for success/failure envelope parity across all commands
 
 ## 6. Parallel integration and cutover (sequential after 2-5)
 

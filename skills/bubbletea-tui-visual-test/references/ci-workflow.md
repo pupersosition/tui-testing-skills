@@ -4,13 +4,19 @@ This document defines CI invocation and baseline refresh rules for the Bubble Te
 
 ## CI Steps
 
-1. Validate Python code and tests for script workstreams:
+1. Validate Go dispatcher/contract tests:
+
+```bash
+go test ./...
+```
+
+2. Validate Python code and tests for migration compatibility workstreams:
 
 ```bash
 python3 -m pytest skills/bubbletea-tui-visual-test/scripts/tests
 ```
 
-2. Validate fixture app compiles:
+3. Validate fixture app compiles:
 
 ```bash
 (
@@ -19,7 +25,7 @@ python3 -m pytest skills/bubbletea-tui-visual-test/scripts/tests
 )
 ```
 
-3. Run integration flow (open -> interact -> wait -> snapshot -> assert-visual -> record):
+4. Run integration flow (open -> interact -> wait -> snapshot -> assert-visual -> record):
 
 ```bash
 bash skills/bubbletea-tui-visual-test/references/examples.sh
