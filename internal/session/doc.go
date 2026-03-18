@@ -1,2 +1,2 @@
-// Package session hosts the Go PTY runtime in later workstreams.
+// Package session implements Go-backed PTY session automation commands.
 package session

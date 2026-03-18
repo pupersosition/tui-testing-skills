@@ -7,10 +7,10 @@
 
 ## 2. Workstream A: session runtime migration (Agent A, owns `internal/session/**`, `tests/session/**`)
 
-- [ ] 2.1 Implement Go PTY session lifecycle (`open`, `close`) with deterministic runtime parameters
-- [ ] 2.2 Implement Go interaction commands (`press`, `type`, `wait`) with timeout and structured error handling
-- [ ] 2.3 Add session parity tests against fixture workflows and contract golden responses
-- [ ] 2.4 Provide integration hooks consumed by dispatcher without editing non-owned files
+- [x] 2.1 Implement Go PTY session lifecycle (`open`, `close`) with deterministic runtime parameters
+- [x] 2.2 Implement Go interaction commands (`press`, `type`, `wait`) with timeout and structured error handling
+- [x] 2.3 Add session parity tests against fixture workflows and contract golden responses
+- [x] 2.4 Provide integration hooks consumed by dispatcher without editing non-owned files
 
 ## 3. Workstream B: visual pipeline migration (Agent B, owns `internal/visual/**`, `tests/visual/**`)
 
