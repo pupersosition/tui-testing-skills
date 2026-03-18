@@ -4,16 +4,16 @@ This document defines CI invocation and baseline refresh rules for the Bubble Te
 
 ## CI Steps
 
-1. Validate Go dispatcher/contract tests:
+1. Validate Go codebase:
 
 ```bash
 go test ./...
 ```
 
-2. Validate Python code and tests for migration compatibility workstreams:
+2. Run explicit Go parity suite for the three primary lanes:
 
 ```bash
-python3 -m pytest skills/bubbletea-tui-visual-test/scripts/tests
+go test ./tests/session ./tests/visual ./tests/install
 ```
 
 3. Validate fixture app compiles:
@@ -25,13 +25,19 @@ python3 -m pytest skills/bubbletea-tui-visual-test/scripts/tests
 )
 ```
 
-4. Run integration flow (open -> interact -> wait -> snapshot -> assert-visual -> record):
+4. Run migration-era Python compatibility tests (secondary gate during migration window):
+
+```bash
+python3 -m pytest skills/bubbletea-tui-visual-test/scripts/tests
+```
+
+5. Run compatibility integration flow if requested:
 
 ```bash
 bash skills/bubbletea-tui-visual-test/references/examples.sh
 ```
 
-If your pipeline does not materialize `examples.sh`, run the script body from `references/examples.md`.
+For integration and cutover evidence, see `references/integration-cutover.md`.
 
 ## Required Artifacts Per Run
 
@@ -71,3 +77,5 @@ Before merging parallel workstreams, verify:
 - Visual pipeline files remain under `scripts/visual_*`.
 - Workflow/reference docs remain under `references/` and `SKILL.md`.
 - Dispatcher contract remains aligned with `references/command-schema.json`.
+
+Ownership and contract validation outcomes are tracked in `references/integration-cutover.md`.

@@ -26,6 +26,12 @@ Compatibility integration runner (legacy Python runtime) for deterministic end-t
 bash skills/bubbletea-tui-visual-test/references/examples.sh
 ```
 
+Go parity suite (default CI path):
+
+```bash
+go test ./tests/session ./tests/visual ./tests/install
+```
+
 The runner performs:
 
 1. `open` fixture Bubble Tea app (`go run .`)
@@ -54,3 +60,5 @@ Outputs:
 - Baseline (auto-initialized on first run) at `references/baselines/counter-1.png`
 
 Note: the integration runner uses deterministic fixture screen payloads for `ready` and `counter-1` checkpoints so visual assertions are stable and meaningful across runs.
+
+Deprecation timeline and rollback notes for the compatibility path live in `references/python-deprecation-checklist.md`.

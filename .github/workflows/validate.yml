@@ -13,12 +13,15 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: go.mod
-      - name: Go test
+      - name: Go test (all packages)
         run: go test ./...
+      - name: Go parity suite
+        run: go test ./tests/session ./tests/visual ./tests/install
       - name: Go build
         run: go build ./cmd/agent-tui ./cmd/install-skill
 
-  python-migration-checks:
+  python-compatibility:
+    needs: go-validate
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

@@ -35,7 +35,7 @@
 
 ## 6. Parallel integration and cutover (sequential after 2-5)
 
-- [ ] 6.1 Merge workstreams and run full parity suite (session flow, visual regression flow, installer behavior)
-- [ ] 6.2 Validate non-overlapping ownership assumptions and resolve any contract mismatches discovered at integration time
-- [ ] 6.3 Flip default tooling references from Python to Go in repository docs and CI workflows
-- [ ] 6.4 Define and execute Python deprecation checklist (cutoff date, removal PR, rollback notes)
+- [x] 6.1 Merge workstreams and run full parity suite (session flow, visual regression flow, installer behavior)
+- [x] 6.2 Validate non-overlapping ownership assumptions and resolve any contract mismatches discovered at integration time
+- [x] 6.3 Flip default tooling references from Python to Go in repository docs and CI workflows
+- [x] 6.4 Define and execute Python deprecation checklist (cutoff date, removal PR, rollback notes)

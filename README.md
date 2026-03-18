@@ -83,3 +83,8 @@ Run integration smoke test (compatibility runner):
 ```bash
 bash skills/bubbletea-tui-visual-test/references/examples.sh
 ```
+
+Cutover tracking:
+
+- Integration and ownership validation: `skills/bubbletea-tui-visual-test/references/integration-cutover.md`
+- Python deprecation timeline and rollback notes: `skills/bubbletea-tui-visual-test/references/python-deprecation-checklist.md`
