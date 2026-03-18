@@ -21,10 +21,10 @@
 
 ## 4. Workstream C: installer migration (Agent C, owns `cmd/install-skill/**`, `internal/install/**`, `tests/install/**`)
 
-- [ ] 4.1 Implement Go installer CLI with `--agent`, `--skill`, `--source-root`, `--dest`, `--force`, and `--dry-run`
-- [ ] 4.2 Implement destination resolution parity for `claude`, `copilot`, `codex`, and `opencode`
-- [ ] 4.3 Implement safe overwrite behavior and dry-run reporting parity with existing installer semantics
-- [ ] 4.4 Add installer tests for supported-agent success, unknown-agent rejection, destination override, and overwrite guardrails
+- [x] 4.1 Implement Go installer CLI with `--agent`, `--skill`, `--source-root`, `--dest`, `--force`, and `--dry-run`
+- [x] 4.2 Implement destination resolution parity for `claude`, `copilot`, `codex`, and `opencode`
+- [x] 4.3 Implement safe overwrite behavior and dry-run reporting parity with existing installer semantics
+- [x] 4.4 Add installer tests for supported-agent success, unknown-agent rejection, destination override, and overwrite guardrails
 
 ## 5. Workstream D: dispatcher and migration wrappers (Agent D, owns `cmd/agent-tui/**`, `skills/bubbletea-tui-visual-test/scripts/**`, docs migration notes)
 

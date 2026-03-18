@@ -13,16 +13,16 @@ Reusable skill package for terminal-first visual testing of Bubble Tea applicati
 
 ## Install
 
+Canonical Go installer entrypoint:
+
+```bash
+go run ./cmd/install-skill --agent codex
+```
+
 Migration-era compatibility installer:
 
 ```bash
 python3 tools/install_skill.py --agent codex
-```
-
-Canonical Go installer entrypoint (bootstrap):
-
-```bash
-go run ./cmd/install-skill
 ```
 
 Canonical Go dispatcher entrypoint (bootstrap):
