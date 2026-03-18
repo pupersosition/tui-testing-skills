@@ -14,10 +14,10 @@
 
 ## 3. Workstream B: visual pipeline migration (Agent B, owns `internal/visual/**`, `tests/visual/**`)
 
-- [ ] 3.1 Implement Go snapshot capture producing PNG plus deterministic metadata records
-- [ ] 3.2 Implement Go baseline comparison (`assert-visual`) with threshold-based pass/fail and diff artifact output
-- [ ] 3.3 Implement Go GIF export (`record`) including structured renderer-unavailable failures
-- [ ] 3.4 Add visual parity tests for metadata shape, diff pass/fail behavior, and renderer failure handling
+- [x] 3.1 Implement Go snapshot capture producing PNG plus deterministic metadata records
+- [x] 3.2 Implement Go baseline comparison (`assert-visual`) with threshold-based pass/fail and diff artifact output
+- [x] 3.3 Implement Go GIF export (`record`) including structured renderer-unavailable failures
+- [x] 3.4 Add visual parity tests for metadata shape, diff pass/fail behavior, and renderer failure handling
 
 ## 4. Workstream C: installer migration (Agent C, owns `cmd/install-skill/**`, `internal/install/**`, `tests/install/**`)
 
